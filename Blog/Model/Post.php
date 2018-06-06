@@ -21,7 +21,7 @@ class Post extends AbstractModel implements PostInterface, IdentityInterface
     /**
      * Cache tag
      */
-    const CACHE_TAG = 'toptal_blog_post';
+    const CACHE_TAG = 'kvr_blog_post';
 
     /**
      * @var \Magento\Framework\UrlInterface
@@ -46,7 +46,7 @@ class Post extends AbstractModel implements PostInterface, IdentityInterface
      */
     protected function _construct()
     {
-        $this->_init('Toptal\Blog\Model\ResourceModel\Post');
+        $this->_init('Kvr\Blog\Model\ResourceModel\Post');
     }
 
 
