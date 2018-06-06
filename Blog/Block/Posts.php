@@ -1,12 +1,12 @@
 <?php
 
-namespace Toptal\Blog\Block;
+namespace Kvr\Blog\Block;
 
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
-use \Toptal\Blog\Model\ResourceModel\Post\Collection as PostCollection;
-use \Toptal\Blog\Model\ResourceModel\Post\CollectionFactory as PostCollectionFactory;
-use \Toptal\Blog\Model\Post;
+use \Kvr\Blog\Model\ResourceModel\Post\Collection as PostCollection;
+use \Kvr\Blog\Model\ResourceModel\Post\CollectionFactory as PostCollectionFactory;
+use \Kvr\Blog\Model\Post;
 
 class Posts extends Template
 {

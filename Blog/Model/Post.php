@@ -1,6 +1,6 @@
 <?php
 
-namespace Toptal\Blog\Model;
+namespace Kvr\Blog\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
@@ -9,11 +9,11 @@ use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
-use Toptal\Blog\Api\Data\PostInterface;
+use Kvr\Blog\Api\Data\PostInterface;
 
 /**
  * Class File
- * @package Toptal\Blog\Model
+ * @package Kvr\Blog\Model
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Post extends AbstractModel implements PostInterface, IdentityInterface

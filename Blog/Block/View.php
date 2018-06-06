@@ -1,14 +1,14 @@
 <?php
 
-namespace Toptal\Blog\Block;
+namespace Kvr\Blog\Block;
 
 use \Magento\Framework\Exception\LocalizedException;
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
 use \Magento\Framework\Registry;
-use \Toptal\Blog\Model\Post;
-use \Toptal\Blog\Model\PostFactory;
-use \Toptal\Blog\Controller\Post\View as ViewAction;
+use \Kvr\Blog\Model\Post;
+use \Kvr\Blog\Model\PostFactory;
+use \Kvr\Blog\Controller\Post\View as ViewAction;
 
 class View extends Template
 {
