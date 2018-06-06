@@ -33,6 +33,11 @@ class Submit extends Action
     protected $post;
 
     /**
+     * @var Magento\Framework\Controller\ResultFactory
+     */
+    protected $resultFactory;
+
+    /**
      * @param Context     $context
      * @param PageFactory $resultPageFactory
      */
@@ -40,6 +45,7 @@ class Submit extends Action
         Context $context,
         PageFactory $resultPageFactory,
         //JsonFactory $resultJsonFactory,
+        ResultFactory $resultFactory,
         Post $post
     )
     {
@@ -47,6 +53,7 @@ class Submit extends Action
         $this->resultPageFactory = $resultPageFactory;
         //$this->resultJsonFactory = $resultJsonFactory;
         $this->post = $post;
+        $this->ResultFactory = $resultFactory;
         return parent::__construct($context);
     }
 
