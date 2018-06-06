@@ -14,7 +14,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Kvr\Blog\Model\PostFactory;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\App\Request\Http;
 
 class Submit extends Action
 {
@@ -29,11 +28,6 @@ class Submit extends Action
     protected $resultFactory;
 
     /**
-     * @var Magento\Framework\App\Request\Http
-     */
-    protected $request;
-
-    /**
      * @var Kvr\Blog\Model\PostFactory
      */
      protected $postFactory;
@@ -46,17 +40,13 @@ class Submit extends Action
         Context $context,
         PageFactory $resultPageFactory,
         ResultFactory $resultFactory,
-        PostFactory $postFactory,
-        //PostResource $postResource,
-        Http $request
+        PostFactory $postFactory
     )
     {
 
         $this->resultPageFactory = $resultPageFactory;
         $this->resultFactory = $resultFactory;
         $this->postFactory = $postFactory;
-        //$this->postResource = $postResource;
-        $this->request = $request;
         return parent::__construct($context);
     }
 
@@ -65,7 +55,7 @@ class Submit extends Action
         $resultPage = $this->resultPageFactory->create();
 
         //Save Data using setData Method using post resource model
-        $postData = $this->request->getPost();
+        $postData = $this->getRequest()->getPost();
             //Probably best do some form of validation here but for tutorial purposes, we wont for now
             $title = $postData['title'];
             $issue = $postData['content'];
