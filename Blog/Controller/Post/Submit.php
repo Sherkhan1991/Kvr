@@ -8,12 +8,15 @@
 
 namespace Kvr\Blog\Controller\Post;
 
+use Kvr\Blog\Model\PostFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
-use Kvr\Blog\Model\PostFactory;
 use Magento\Framework\Exception\LocalizedException;
+use Kvr\Blog\Model\Post;
+use Kvr\Blog\Api\PostRepositoryInterface;
+use Kvr\Blog\Api\Data\PostInterfaceFactory;
 
 class Submit extends Action
 {
@@ -28,9 +31,24 @@ class Submit extends Action
     protected $resultFactory;
 
     /**
-     * @var Kvr\Blog\Model\PostFactory
+     * @var Post
      */
-     protected $postFactory;
+    protected $postFactory;
+
+    /**
+     * @var PostInterfaceFactory
+     */
+    protected $postInterfaceFactory;
+
+    /**
+     * @var PostRepositoryInterface
+     */
+    protected $postRepository;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param Context $context
@@ -40,13 +58,16 @@ class Submit extends Action
         Context $context,
         PageFactory $resultPageFactory,
         ResultFactory $resultFactory,
-        PostFactory $postFactory
+        Post $postFactory,
+        PostRepositoryInterface $postRepository,
+        \Psr\Log\LoggerInterface $logger
     )
     {
-
         $this->resultPageFactory = $resultPageFactory;
         $this->resultFactory = $resultFactory;
         $this->postFactory = $postFactory;
+        $this->postRepository = $postRepository;
+        $this->logger = $logger;
         return parent::__construct($context);
     }
 
@@ -56,23 +77,21 @@ class Submit extends Action
 
         //Save Data using setData Method using post resource model
         $postData = $this->getRequest()->getPost();
-            //Probably best do some form of validation here but for tutorial purposes, we wont for now
-            $title = $postData['title'];
-            $issue = $postData['content'];
-
-            $data = array('title'=>$title,'content'=>$issue);
-            $postResource = $this->postFactory->create();
-
+        $post = $this->postFactory->create();
+        $title = $postData['title'];
             try {
-                $postResource->setData($data);
-                $postResource->save();
-                $this->messageManager->addSuccess("New Post: $title Created");
+                $post->setTitle($title);
+                $post->setContent($postData['content']);
+                $this->postRepository->save($post);
+                $this->messageManager->addSuccessMessage("New Post: ". $title ."Created");
                 $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
                 $redirect->setUrl('/blog/index/index');
                 return $redirect;
             } catch (\Exception $e) {
                 //Add a error message if we cant save the new note from some reason
-                $this->messageManager->addError("Unable to save this Post: $title ");
+                $this->messageManager->addErrorMessage("Unable to save this Post:" . $title);
+                $this->logger->critical('Blog Post save Error', ['exception' => $e]);
+                throw new LocalizedException(__('Blog Post Save Failed'));
             }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Kvr\Blog\Api;
 
+use Magento\Framework\Api\SearchCriteriaInterface;
 use Kvr\Blog\Api\Data\PostInterface;
 
 /**
@@ -11,6 +12,15 @@ use Kvr\Blog\Api\Data\PostInterface;
 interface PostRepositoryInterface
 {
     /**
+     * Get info about post by post id
+     *
+     * @param int $postId
+     * @return PostInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getById($postId);
+
+    /**
      * Create post
      *
      * @param PostInterface $post
@@ -19,14 +29,7 @@ interface PostRepositoryInterface
      */
     public function save(PostInterface $post);
 
-    /**
-     * Get info about post by post id
-     *
-     * @param int $postId
-     * @return PostInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getById($postId);
+
 
     /**
      * Delete post
@@ -48,7 +51,7 @@ interface PostRepositoryInterface
     /**
      * Get post list
      *
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @param SearchCriteriaInterface $searchCriteria
      * @return Kvr\Blog\Api\Data\PostSearchResultsInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
