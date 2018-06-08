@@ -14,9 +14,8 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Exception\LocalizedException;
-use Kvr\Blog\Model\Post;
+use Kvr\Blog\Model\PostFactory as post;
 use Kvr\Blog\Api\PostRepositoryInterface;
-use Kvr\Blog\Api\Data\PostInterfaceFactory;
 
 class Submit extends Action
 {
@@ -34,11 +33,6 @@ class Submit extends Action
      * @var Post
      */
     protected $postFactory;
-
-    /**
-     * @var PostInterfaceFactory
-     */
-    protected $postInterfaceFactory;
 
     /**
      * @var PostRepositoryInterface
