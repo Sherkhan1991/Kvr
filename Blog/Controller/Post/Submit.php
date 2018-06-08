@@ -8,22 +8,15 @@
 
 namespace Kvr\Blog\Controller\Post;
 
-use Kvr\Blog\Model\PostFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Kvr\Blog\Api\PostRepositoryInterface;
 use Kvr\Blog\Api\Data\PostInterfaceFactory;
 
 class Submit extends Action
 {
-    /**
-     * @var Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
-
     /**
      * @var Magento\Framework\Controller\ResultFactory
      */
@@ -46,11 +39,13 @@ class Submit extends Action
 
     /**
      * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param ResultFactory $resultFactory
+     * @param PostInterfaceFactory $postFactory
+     * @param PostRepositoryInterface $postRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
         ResultFactory $resultFactory,
         PostInterfaceFactory $postFactory,
         PostRepositoryInterface $postRepository,
@@ -58,7 +53,6 @@ class Submit extends Action
 
     )
     {
-        $this->resultPageFactory = $resultPageFactory;
         $this->resultFactory = $resultFactory;
         $this->postFactory = $postFactory;
         $this->postRepository = $postRepository;
@@ -69,8 +63,6 @@ class Submit extends Action
 
     public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
-
         //Save Data using setData Method using post resource model
         $postData = $this->getRequest()->getPost();
         $post = $this->postFactory->create();

@@ -4,8 +4,7 @@ namespace Kvr\Blog\Block;
 
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
-use \Kvr\Blog\Model\ResourceModel\Post\Collection as PostCollection;
-use \Kvr\Blog\Model\ResourceModel\Post\CollectionFactory as PostCollectionFactory;
+use \Kvr\Blog\Model\ResourceModel\Post\CollectionFactory;
 use \Kvr\Blog\Model\Post;
 
 class Posts extends Template
@@ -14,21 +13,21 @@ class Posts extends Template
      * CollectionFactory
      * @var null|CollectionFactory
      */
-    protected $_postCollectionFactory = null;
+    protected $postCollectionFactory = null;
 
     /**
      * Constructor
      *
      * @param Context $context
-     * @param PostCollectionFactory $postCollectionFactory
+     * @param CollectionFactory $postCollectionFactory
      * @param array $data
      */
     public function __construct(
         Context $context,
-        PostCollectionFactory $postCollectionFactory,
+        CollectionFactory $postCollectionFactory,
         array $data = []
     ) {
-        $this->_postCollectionFactory = $postCollectionFactory;
+        $this->postCollectionFactory = $postCollectionFactory;
         parent::__construct($context, $data);
     }
 
@@ -38,7 +37,7 @@ class Posts extends Template
     public function getPosts()
     {
         /** @var PostCollection $postCollection */
-        $postCollection = $this->_postCollectionFactory->create();
+        $postCollection = $this->postCollectionFactory->create();
         $postCollection->addFieldToSelect('*')->load();
         return $postCollection->getItems();
     }

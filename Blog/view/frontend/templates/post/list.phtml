@@ -2,8 +2,12 @@
 <h1>Kvr Posts</h1>
 <?php foreach($block->getPosts() as $post): ?>
     <?php /** @var Kvr\Blog\Model\Post */ ?>
-    <h2><a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></h2>
-    <p><?php echo $post->getContent(); ?></p>
+    <div>
+        <span><strong>Title: <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>
+        <span>Content: <?php echo $post->getContent(); ?></span>
+        <span>PostID: <?php echo $post->getId(); ?></span>
+        <span>Date: <?php echo $post->getCreatedAt(); ?></span>
+    </div>
 <?php endforeach; ?>
 <br />
 <br />
