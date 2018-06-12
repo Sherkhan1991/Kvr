@@ -84,7 +84,7 @@ class Submit extends Action
             $post->setTitle($title);
             $post->setContent($content);
             $this->postRepository->save($post);
-            $this->messageManager->addSuccessMessage("New Post: ". $title ."Created");
+            $this->messageManager->addSuccessMessage("New Post: ". $title ." Created");
             //Get latest Row
             $id = $post->getId();
             //return Json
@@ -93,7 +93,7 @@ class Submit extends Action
 
         } catch (\Exception $e) {
             //Add a error message if we cant save the new note from some reason
-            $this->messageManager->addErrorMessage("Unable to save this Post:" . $title);
+            //$this->messageManager->addErrorMessage("Unable to save this Post: " . $title);
             $this->logger->critical('Blog Post save Error', ['exception' => $e]);
             throw new LocalizedException(__('Blog Post Save Failed'));
         }

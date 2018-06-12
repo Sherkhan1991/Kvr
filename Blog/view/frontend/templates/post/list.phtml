@@ -14,7 +14,6 @@
         <?php endforeach; ?>
     </p>
 </div>
-<div id="result"></div>
 
 <br />
 <br />
@@ -45,28 +44,7 @@
                     },
                     success: function (msg) {
                         console.log(JSON.stringify(msg));
-                        var customurl = "<?php echo $block->getUrl('blog/index/index') ?>";
-
-                        $.ajax({
-                            type: 'POST',
-                            url: customurl,
-                            data: { postid : msg['postid']},
-                            success: function (result) {
-                                console.log('Call 2');
-                                console.log(result['postid']);
-                                //convert response object to string
-                                console.log(JSON.stringify(result));
-                                //Static Code to fetch all posts
-                                var html = '<?php foreach($block->getPosts() as $post): ?>'+
-                                    '<br/><span>Title:<strong> <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>'+
-                                    '<span>Content: <?php echo $post->getContent(); ?></span>'+
-                                    '<span>PostID: <?php echo $post->getId(); ?></span>'+
-                                    '<span>Date: <?php echo $post->getCreatedAt(); ?></span>'+
-                                    '<?php endforeach; ?>';
-                                $('#result').html(html);
-                            }
-                        });
-
+                        $( "#ajaxData" ).load( "https://demotujar.stagingbuilds.com/blog/index/index #ajaxData" );
                     }
                 });
             });
