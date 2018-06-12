@@ -13,21 +13,21 @@ class Posts extends Template
      * CollectionFactory
      * @var null|CollectionFactory
      */
-    protected $postCollectionFactory = null;
+    protected $postCollection = null;
 
     /**
      * Constructor
      *
      * @param Context $context
-     * @param CollectionFactory $postCollectionFactory
+     * @param CollectionFactory $postCollection
      * @param array $data
      */
     public function __construct(
         Context $context,
-        CollectionFactory $postCollectionFactory,
+        CollectionFactory $postCollection,
         array $data = []
     ) {
-        $this->postCollectionFactory = $postCollectionFactory;
+        $this->postCollection = $postCollection;
         parent::__construct($context, $data);
     }
 
@@ -37,11 +37,21 @@ class Posts extends Template
     public function getPosts()
     {
         /** @var PostCollection $postCollection */
-        $postCollection = $this->postCollectionFactory->create();
+        $postCollection = $this->postCollection->create();
         $postCollection->addFieldToSelect('*')->load();
         return $postCollection->getItems();
     }
 
+    /**
+     * @return Post[]
+     */
+    public function getPost($post_Id)
+    {
+        /** @var PostCollection $postCollection */
+        $postCollection = $this->postCollection->create();
+        $post = $postCollection->addFieldToFilter('post_id',$post_Id);
+        return $post;
+    }
     /**
      * For a given post, returns it's url
      * @param Post $post

@@ -1,22 +1,75 @@
-<?php /** @var Kvr\Blog\Block\Posts $block */ ?>
-<h1>Kvr Posts</h1>
-<?php foreach($block->getPosts() as $post): ?>
-    <?php /** @var Kvr\Blog\Model\Post */ ?>
-    <div>
-        <span><strong>Title: <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>
-        <span>Content: <?php echo $post->getContent(); ?></span>
-        <span>PostID: <?php echo $post->getId(); ?></span>
-        <span>Date: <?php echo $post->getCreatedAt(); ?></span>
-    </div>
-<?php endforeach; ?>
+<!--Ajax Will update this section -->
+<div id="ajaxData">
+    <?php /** @var Kvr\Blog\Block\Posts $block */ ?>
+    <h1>Kvr Posts</h1>
+    <p class="ajaxData">
+        <?php foreach($block->getPosts() as $post): ?>
+            <?php /** @var Kvr\Blog\Model\Post */ ?>
+            <div>
+                <span>Title:<strong> <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>
+                <span>Content: <?php echo $post->getContent(); ?></span>
+                <span>PostID: <?php echo $post->getId(); ?></span>
+                <span>Date: <?php echo $post->getCreatedAt(); ?></span>
+            </div>
+        <?php endforeach; ?>
+    </p>
+</div>
+<div id="result"></div>
+
 <br />
 <br />
 <h1>Create New Blog</h1>
-<form action="<?php echo $this->getUrl("blog/post/submit")?>" method="post">
+<form id="blogPost" method="post">
     <div class="form-group">
         <label for="title">Title:</label>
         <input type="text" class="input" name="title" id="title">
         <textarea name="content" rows="10" cols="30">Enter your blog content</textarea>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button id="blogSubmit" type="submit" class="btn btn-default">Submit</button>
     </div>
 </form>
+
+<script>
+    require(['jquery', 'jquery/ui'], function($){
+        $(document).ready(function($) {
+            $('#blogSubmit').click(function(e) {
+                e.preventDefault();
+                var customurl = "<?php echo $block->getUrl('blog/post/submit') ?>";
+
+                $.ajax({
+                    type: 'POST',
+                    url: customurl,
+                    data: $('#blogPost').serialize(),
+                    beforeSend:function()
+                    {
+                        $('.loader').show();
+                    },
+                    success: function (msg) {
+                        console.log(JSON.stringify(msg));
+                        var customurl = "<?php echo $block->getUrl('blog/index/index') ?>";
+
+                        $.ajax({
+                            type: 'POST',
+                            url: customurl,
+                            data: { postid : msg['postid']},
+                            success: function (result) {
+                                console.log('Call 2');
+                                console.log(result['postid']);
+                                //convert response object to string
+                                console.log(JSON.stringify(result));
+                                //Static Code to fetch all posts
+                                var html = '<?php foreach($block->getPosts() as $post): ?>'+
+                                    '<br/><span>Title:<strong> <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>'+
+                                    '<span>Content: <?php echo $post->getContent(); ?></span>'+
+                                    '<span>PostID: <?php echo $post->getId(); ?></span>'+
+                                    '<span>Date: <?php echo $post->getCreatedAt(); ?></span>'+
+                                    '<?php endforeach; ?>';
+                                $('#result').html(html);
+                            }
+                        });
+
+                    }
+                });
+            });
+        });
+    });
+</script>

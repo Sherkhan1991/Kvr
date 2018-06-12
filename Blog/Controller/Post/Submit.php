@@ -38,18 +38,25 @@ class Submit extends Action
     private $logger;
 
     /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
+    private $resultJsonFactory;
+
+    /**
      * @param Context $context
      * @param ResultFactory $resultFactory
      * @param PostInterfaceFactory $postFactory
      * @param PostRepositoryInterface $postRepository
      * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
         ResultFactory $resultFactory,
         PostInterfaceFactory $postFactory,
         PostRepositoryInterface $postRepository,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
 
     )
     {
@@ -57,29 +64,40 @@ class Submit extends Action
         $this->postFactory = $postFactory;
         $this->postRepository = $postRepository;
         $this->logger = $logger;
-
+        $this->resultJsonFactory = $resultJsonFactory;
         return parent::__construct($context);
     }
 
+    /**
+     * @return $this|\Magento\Framework\Controller\Result\Json
+     * @throws LocalizedException
+     */
     public function execute()
     {
-        //Save Data using setData Method using post resource model
-        $postData = $this->getRequest()->getPost();
+        $this->logger->debug('Submit Call run');
+        //Save Data using Ajax
         $post = $this->postFactory->create();
-        $title = $postData['title'];
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+
         try {
             $post->setTitle($title);
-            $post->setContent($postData['content']);
+            $post->setContent($content);
             $this->postRepository->save($post);
             $this->messageManager->addSuccessMessage("New Post: ". $title ."Created");
-            $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-            $redirect->setUrl('/blog/index/index');
-            return $redirect;
+            //Get latest Row
+            $id = $post->getId();
+            //return Json
+            $resultJson = $this->resultJsonFactory->create();
+            return $resultJson->setData(['postid' => $id]);
+
         } catch (\Exception $e) {
             //Add a error message if we cant save the new note from some reason
             $this->messageManager->addErrorMessage("Unable to save this Post:" . $title);
             $this->logger->critical('Blog Post save Error', ['exception' => $e]);
             throw new LocalizedException(__('Blog Post Save Failed'));
         }
+
     }
+
 }
