@@ -21,7 +21,7 @@ use Kvr\Blog\Model\ResourceModel\Post\Collection;
 class PostRepository implements PostRepositoryInterface
 {
     /**
-     * @var Post
+     * @var PostFactory
      */
     private $postFactory;
 
@@ -36,7 +36,7 @@ class PostRepository implements PostRepositoryInterface
     private $searchResultFactory;
 
     public function __construct(
-        Post $postFactory,
+        PostFactory $postFactory,
         PostCollectionFactory $postCollectionFactory,
         PostSearchResultsInterfaceFactory $searchResultFactory
     ) {
@@ -47,7 +47,7 @@ class PostRepository implements PostRepositoryInterface
     public function getById($id)
     {
         $post = $this->postFactory->create();
-        $post->getResource()->load($post, $id);
+        $post->getResource()->load($post, $id, 'post_id');
         if (! $post->getId()) {
             throw new NoSuchEntityException(__('Unable to find post with ID "%1"', $id));
         }

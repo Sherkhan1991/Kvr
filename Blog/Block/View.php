@@ -6,8 +6,7 @@ use \Magento\Framework\Exception\LocalizedException;
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
 use \Magento\Framework\Registry;
-use \Kvr\Blog\Model\Post;
-use \Kvr\Blog\Model\PostFactory;
+use \Kvr\Blog\Api\PostRepositoryInterface;
 use \Kvr\Blog\Controller\Post\View as ViewAction;
 
 class View extends Template
@@ -16,66 +15,53 @@ class View extends Template
      * Core registry
      * @var Registry
      */
-    protected $_coreRegistry;
+    protected $coreRegistry;
 
     /**
-     * Post
-     * @var null|Post
+     * PostRepositoryInterface
+     * @var PostRepositoryInterface
      */
-    protected $_post = null;
-
-    /**
-     * PostFactory
-     * @var null|PostFactory
-     */
-    protected $_postFactory = null;
+    protected $postRepositoryInterface;
 
     /**
      * Constructor
      * @param Context $context
      * @param Registry $coreRegistry
-     * @param PostFactory $postCollectionFactory
+     * @param PostRepositoryInterface $postRepositoryInterface
      * @param array $data
      */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
-        PostFactory $postFactory,
+        PostRepositoryInterface $postRepositoryInterface,
         array $data = []
     ) {
-        $this->_postFactory = $postFactory;
-        $this->_coreRegistry = $coreRegistry;
+        $this->coreRegistry = $coreRegistry;
+        $this->postRepositoryInterface = $postRepositoryInterface;
         parent::__construct($context, $data);
     }
 
     /**
-     * Lazy loads the requested post
-     * @return Post
+     * @return PostRepositoryInterface[]
      * @throws LocalizedException
      */
-    public function getPost()
+    public function getPos()
     {
-        if ($this->_post === null) {
-            /** @var Post $post */
-            $post = $this->_postFactory->create();
-            $post->load($this->_getPostId());
-
-            if (!$post->getId()) {
+        /** @var PostRepositoryInterfaceFactory $postRepositoryInterfaceFactory */
+            if ($this->getPostId())
+                return $this->postRepositoryInterface->getById($this->getPostId());
+            else
                 throw new LocalizedException(__('Post not found'));
-            }
-
-            $this->_post = $post;
-        }
-        return $this->_post;
     }
-
     /**
      * Retrieves the post id from the registry
      * @return int
      */
-    protected function _getPostId()
+    protected function getPostId()
     {
-        return (int) $this->_coreRegistry->registry(
+        //Registry used to fetch global variable
+        //ViewAction|Controller where REGISTRY_KEY_POST_ID|Const is saved
+        return (int) $this->coreRegistry->registry(
             ViewAction::REGISTRY_KEY_POST_ID
         );
     }

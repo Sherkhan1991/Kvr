@@ -43,16 +43,6 @@ class Posts extends Template
     }
 
     /**
-     * @return Post[]
-     */
-    public function getPost($post_Id)
-    {
-        /** @var PostCollection $postCollection */
-        $postCollection = $this->postCollection->create();
-        $post = $postCollection->addFieldToFilter('post_id',$post_Id);
-        return $post;
-    }
-    /**
      * For a given post, returns it's url
      * @param Post $post
      * @return string
