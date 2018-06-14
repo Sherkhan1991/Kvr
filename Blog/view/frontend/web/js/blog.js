@@ -60,14 +60,15 @@ require(['jquery','mage/url'], function($, url){
     //Delete Post
     $('.Delete').click(function(e) {
         var deleteId = $(this).attr('id');
+        var hasView = $(this).hasClass("View");
         console.log('Clicked '+ deleteId);
         $.ajax({
             type: 'POST',
             url: baseUrl + 'post/delete',
-            data: {'postid': $(this).attr('id'),'view': $(this).hasClass("View") },
+            data: {'postid': $(this).attr('id')},
             success: function (msg) {
                 console.log(JSON.stringify(msg));
-                if (msg['view'] == "true") {
+                if (hasView == 1) {
                     window.location = baseUrl + 'index/index';
                 } else $("div#" + deleteId).remove();
             }
