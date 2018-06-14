@@ -56,4 +56,19 @@ require(['jquery','mage/url'], function($, url){
             });
         }
     });
+
+    //Delete Post
+    $('button.Delete').click(function(e) {
+        var deleteId = $(this).attr('id');
+        console.log('Clicked '+ deleteId);
+        $.ajax({
+            type: 'POST',
+            url: baseUrl + 'post/delete',
+            data: {'postid': $(this).attr('id')},
+            success: function (msg) {
+                console.log(JSON.stringify(msg));
+                $("div#"+deleteId).remove();
+            }
+        });
+    });
 });

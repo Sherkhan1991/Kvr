@@ -5,11 +5,12 @@
     <p class="ajaxData">
         <?php foreach($block->getPosts() as $post): ?>
             <?php /** @var Kvr\Blog\Model\Post */ ?>
-            <div>
+            <div id="<?php echo $post->getId(); ?>">
                 <span>Title:<strong> <a href="<?php echo $block->getPostUrl($post);?>"><?php echo $post->getTitle(); ?></a></strong></span>
                 <span>Content: <?php echo $post->getContent(); ?></span>
                 <span>PostID: <?php echo $post->getId(); ?></span>
                 <span>Date: <?php echo $post->getCreatedAt(); ?></span>
+                <span><button type="button" class="Delete" id="<?php echo $post->getId(); ?>">Delete</button></span>
             </div>
         <?php endforeach; ?>
     </p>
