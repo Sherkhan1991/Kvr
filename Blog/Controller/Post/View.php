@@ -84,9 +84,8 @@ class View extends Action
             $title = $_POST['title'];
             $content = $_POST['content'];
 
-            $this->logger->info('Post Id ' . $postid);
-            $this->logger->info('$title ' . $title);
-            $this->logger->info('$content' . $content);
+            //$this->logger->info('Post Update: Post Id ' . $postid . ' & $title ' . $title . '& $content' . $content);
+
             try {
                 //Updating the Post
                 /** @var PostRepositoryInterfaceFactory $postRepositoryInterfaceFactory */

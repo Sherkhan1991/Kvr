@@ -14,6 +14,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Kvr\Blog\Api\PostRepositoryInterface;
 use Kvr\Blog\Api\Data\PostInterfaceFactory;
+use Magento\Framework\Controller\Result\JsonFactory;
 
 class Submit extends Action
 {
@@ -79,7 +80,6 @@ class Submit extends Action
         $post = $this->postFactory->create();
         $title = $_POST['title'];
         $content = $_POST['content'];
-
         try {
             $post->setTitle($title);
             $post->setContent($content);
@@ -87,6 +87,7 @@ class Submit extends Action
             $this->messageManager->addSuccessMessage("New Post: ". $title ." Created");
             //Get latest Row
             $id = $post->getId();
+            //$this->logger->info('$id '. $id);
             //return Json
             $resultJson = $this->resultJsonFactory->create();
             return $resultJson->setData(['postid' => $id]);
@@ -94,7 +95,7 @@ class Submit extends Action
         } catch (\Exception $e) {
             //Add a error message if we cant save the new note from some reason
             //$this->messageManager->addErrorMessage("Unable to save this Post: " . $title);
-            $this->logger->critical('Blog Post save Error', ['exception' => $e]);
+            $this->logger->info('Blog Post Submit Error', ['exception' => $e]);
             throw new LocalizedException(__('Blog Post Save Failed'));
         }
 
