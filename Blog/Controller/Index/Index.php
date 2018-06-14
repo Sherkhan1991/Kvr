@@ -2,11 +2,11 @@
 
 namespace Kvr\Blog\Controller\Index;
 
-use \Magento\Framework\App\Action\Action;
-use \Magento\Framework\View\Result\PageFactory;
-use \Magento\Framework\View\Result\Page;
-use \Magento\Framework\App\Action\Context;
-use \Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\Result\Page;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Exception\LocalizedException;
 
 class Index extends Action
 {
