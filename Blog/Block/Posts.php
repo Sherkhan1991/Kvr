@@ -4,42 +4,51 @@ namespace Kvr\Blog\Block;
 
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
-use \Kvr\Blog\Model\ResourceModel\Post\CollectionFactory;
 use \Kvr\Blog\Model\Post;
+use Kvr\Blog\Api\PostRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class Posts extends Template
 {
+
     /**
-     * CollectionFactory
-     * @var null|CollectionFactory
+     * @var PostRepositoryInterface
      */
-    protected $postCollection = null;
+    protected $postRepository;
+
+    /**
+     * SearchCriteriaBuilder
+     * @var SearchCriteriaBuilder
+     */
+    protected $searchCriteriaBuilder;
 
     /**
      * Constructor
      *
      * @param Context $context
-     * @param CollectionFactory $postCollection
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
      */
     public function __construct(
         Context $context,
-        CollectionFactory $postCollection,
+        PostRepositoryInterface $postRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
-        $this->postCollection = $postCollection;
+        $this->postRepository = $postRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct($context, $data);
     }
 
     /**
-     * @return Post[]
+     * @return postRepository[]
      */
     public function getPosts()
     {
-        /** @var PostCollection $postCollection */
-        $postCollection = $this->postCollection->create();
-        $postCollection->addFieldToSelect('*')->load();
-        return $postCollection->getItems();
+        //Use to Fetch All records
+        $search_criteria =  $this->searchCriteriaBuilder->create();
+        $postRepository = $this->postRepository->getList($search_criteria);
+        return $postRepository->getItems();
     }
 
     /**

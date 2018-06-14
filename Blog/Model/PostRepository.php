@@ -13,7 +13,6 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Kvr\Blog\Api\PostRepositoryInterface;
 use Kvr\Blog\Api\Data\PostInterface;
-use Kvr\Blog\Api\Data\PostSearchResultsInterface;
 use Kvr\Blog\Api\Data\PostSearchResultsInterfaceFactory;
 use Kvr\Blog\Model\ResourceModel\Post\CollectionFactory as PostCollectionFactory;
 use Kvr\Blog\Model\ResourceModel\Post\Collection;
@@ -28,7 +27,7 @@ class PostRepository implements PostRepositoryInterface
     /**
      * @var PostCollectionFactory
      */
-    private $postCollectionFactory;
+    private $postCollection;
 
     /**
      * @var PostSearchResultsInterfaceFactory
@@ -37,11 +36,11 @@ class PostRepository implements PostRepositoryInterface
 
     public function __construct(
         PostFactory $postFactory,
-        PostCollectionFactory $postCollectionFactory,
+        PostCollectionFactory $postCollection,
         PostSearchResultsInterfaceFactory $searchResultFactory
     ) {
         $this->postFactory = $postFactory;
-        $this->postCollectionFactory = $postCollectionFactory;
+        $this->postCollection = $postCollection;
         $this->searchResultFactory = $searchResultFactory;
     }
     public function getById($id)
@@ -73,7 +72,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
-        $collection = $this->collectionFactory->create();
+        $collection = $this->postCollection->create();
 
         $this->addFiltersToCollection($searchCriteria, $collection);
         $this->addSortOrdersToCollection($searchCriteria, $collection);
