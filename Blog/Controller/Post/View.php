@@ -9,7 +9,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Framework\Controller\Result\JsonFactory;
-use \Kvr\Blog\Api\PostRepositoryInterface;
+use Kvr\Blog\Api\PostRepositoryInterface;
 
 class View extends Action
 {
