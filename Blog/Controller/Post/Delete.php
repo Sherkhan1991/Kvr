@@ -62,7 +62,7 @@ class Delete extends Action
                 $post->deleteById($postId);
                 $this->messageManager->addSuccessMessage("Post Removed: ". $postId);
                 $resultJson = $this->resultJsonFactory->create();
-                return $resultJson->setData(['delete' => 'Post Deleted','postid' => $postId]);
+                return $resultJson->setData(['delete' => 'Post Deleted','postid' => $postId,'view' => $_POST["view"]]);
             }
         }catch (\Exception $e) {
             $this->logger->info('Delete Post Failed', ['exception' => $e]);

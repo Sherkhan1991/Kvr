@@ -16,7 +16,7 @@ require(['jquery','mage/url'], function($, url){
 
             $.ajax({
                 type: 'POST',
-                url: baseUrl,
+                url: baseUrl + 'post/view',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -58,16 +58,18 @@ require(['jquery','mage/url'], function($, url){
     });
 
     //Delete Post
-    $('button.Delete').click(function(e) {
+    $('.Delete').click(function(e) {
         var deleteId = $(this).attr('id');
         console.log('Clicked '+ deleteId);
         $.ajax({
             type: 'POST',
             url: baseUrl + 'post/delete',
-            data: {'postid': $(this).attr('id')},
+            data: {'postid': $(this).attr('id'),'view': $(this).hasClass("View") },
             success: function (msg) {
                 console.log(JSON.stringify(msg));
-                $("div#"+deleteId).remove();
+                if (msg['view'] == "true") {
+                    window.location = baseUrl + 'index/index';
+                } else $("div#" + deleteId).remove();
             }
         });
     });
