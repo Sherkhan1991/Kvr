@@ -31,5 +31,9 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         return  $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('Kvr_Blog::blog_posts');
+        $resultPage->addBreadcrumb(__('Blog Posts'), __('Blog Posts'));
+        $resultPage->addBreadcrumb(__('Manage Blog Posts'), __('Manage Blog Posts'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Blog Posts'));
     }
 }
