@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Kvr_Blog::blog" title="Blogs" translate="title" module="Kvr_Blog" parent="Magento_Backend::system" sortOrder="50" dependsOnModule="Kvr_Blog" resource="Kvr_Blog::blog"/>
+        <add id="Kvr_Blog::blog_posts" title="Posts" translate="title" module="Kvr_Blog" parent="Kvr_Blog::blog" sortOrder="10" dependsOnModule="Kvr_Blog" action="blog/posts" resource="Kvr_Blog::blog"/>
+    </menu>
+</config>
