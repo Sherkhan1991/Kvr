@@ -36,4 +36,14 @@ class Index extends \Magento\Backend\App\Action
         $resultPage->addBreadcrumb(__('Manage Blog Posts'), __('Manage Blog Posts'));
         $resultPage->getConfig()->getTitle()->prepend(__('Blog Posts'));
     }
+
+    /**
+     * Is the user allowed to view the blog post grid.
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Kvr_Blog::blog_posts');
+    }
 }
